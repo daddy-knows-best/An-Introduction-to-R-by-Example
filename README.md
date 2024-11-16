@@ -21,3 +21,17 @@ I had a fun.
 
 p.s. This practice of literate programming influenced me, and I started using more templates, and graphing with R/gnuplot to visualize data into proper diagrams. 
 <img width="1440" alt="Screenshot 2024-11-15 at 8 16 20 PM" src="https://github.com/user-attachments/assets/757726de-d028-4efe-a6c3-83db3c048058">
+
+# How to 
+I forgot how to build in command line :
+```bash
+$ R CMD Sweave R-intro.Rnw
+$ (pdf/xe)latex R-into.tex
+```
+There should be a way to suppress warnings in command line.
+or, if the warnings are bothering:
+
+From RStudio as above click `Compile PDF', then
+```bash
+$ (pdf/xe)latex R-into.tex
+```
