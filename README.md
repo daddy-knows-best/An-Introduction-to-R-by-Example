@@ -14,7 +14,9 @@ Since I had to move out to Austin, TX to get a new job right after that, I could
 I had a fun.
 
 [1] Literate Programming, Don Knuth, CSLI, 1992
+
 [2] https://github.com/nrnrnr, Norman Ramsey
+
 [3] "Sweave: Dynamic Generation of Statistical Reports Using Literate Data Analysis", Leisch, Friedrich, 2002
 
 p.s. This practice of literate programming influenced me, and I started using more templates, and graphing with R/gnuplot to visualize data into proper diagrams. 
