@@ -20,3 +20,4 @@ I had a fun.
 [3] "Sweave: Dynamic Generation of Statistical Reports Using Literate Data Analysis", Leisch, Friedrich, 2002
 
 p.s. This practice of literate programming influenced me, and I started using more templates, and graphing with R/gnuplot to visualize data into proper diagrams. 
+<img width="1440" alt="Screenshot 2024-11-15 at 8 16 20 PM" src="https://github.com/user-attachments/assets/757726de-d028-4efe-a6c3-83db3c048058">
