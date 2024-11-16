@@ -1,0 +1,2039 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+%\documentclass[11pt]{article} % use larger type; default would be 10pt
+\documentclass[10pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{b5paper} % or letterpaper (US) or a5paper or....
+% \geometry{margins=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+\usepackage{kotex, makeidx}
+\usepackage{hyperref}
+\usepackage{appendix}
+\usepackage{vhistory}
+\makeindex
+%%% The "real" document content comes below...
+
+\title{An Introduction to R \\ by Example version 0.1 \\ (공개 준비용)}
+%%\title{예제로 배우는 R} %% 入門書}
+\author{Sajang Yang \\
+  e-mail: Sajang.Yang (at) gmail (dot) com}
+\date{August 19, 2011} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\pagenumbering{roman}
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+
+\newpage
+\begin{versionhistory}
+  \vhEntry{0.1}{\today}{Sajang\ Yang}{Created. I am planning to revise this document a couple of more times and release to the public as GPL/GFDL licensed document}
+\end{versionhistory}
+
+\newpage
+\pagenumbering{arabic}
+\section{Introduction and preliminaries}
+이 문서는 정식 R 입문서\cite{R-intro, R-intro-ko} 매뉴얼이 아닙니다. 이 문서는 R 입문서에 바탕을 둔 예제 Sweave\cite{Leisch02, Leisch11} 문서입니다. 이 문서의 목적은 R 입문서를 읽으며 문서에 나와 있는 예제 코드와 그 출력들을 모아 이 문서를 읽는 것으로 실제 R이 어떻게 동작하는 지 (제 스스로 읽고) 이해를 돕는 데 있습니다. 각 단원에 대한 자세한 내용은 해당 R 입문서를 보시고, 이 문서는 \dotemph{보조 이해 수단}으로 읽기 바랍니다. Kindle과 같은 작은 디스플레이를 가진 E-book Reader에서 읽기 편하도록 이 문서는 B5 크기로 포맷되었습니다. 이 문서는 소스와 함께 배포될 예정이오니 필요하신 분들은 A4나 letter지 크기로 크기를 조절하셔서 보셔도 좋습니다. 이 문서는 GNU Pulic License (GPL)/ GNU Free Document License (GFDL) 문서입니다.
+%%B5 종이 크기에 출력하기 편하게 R 출력 칼럼 수를 60으로 고정하였으므로, 큰 종이로 포맷하실 때에는 칼럼 수를 늘리는\footnote{제 생각에 `늘리다'가 위 문장의 뜻과 맞는 것 같습니다.} 것이 읽기에 편할 것입니다. 이 문서는 GNU Pulic License (GPL)/ GNU Free Document License (GFDL) 문서입니다. \footnote{자유 소프트웨어/자유 문서이니 맘대로 읽고, 바꾸고, 나눠드리란 것이죠. 문서를 되도록이면 얇게 만들기 위해서 라이선스 부록 첨부를 생략할까 생각 중입니다. 원래 의도는 이 문서를 짧고 조그맣게 만들려고 했는 데, 막상 대충 문서가 완성되어 가는 모습을 보니, 크기는 작아도 페이지 수는 오히려 원 문서보다 더 많아질 수도 있겠다는 생각이 듭니다. 예제를 보여주기 위한 문서라 실제 출력을 그대로 보여주는 데 충실하려 했고, 또 제 나름대로 읽기 편하게 보이려고 중복 출력하는 데 주저하지 않은 데 원인이 있습니다. 휴가 일정에 맞춰 황급히 마무리하느라 아쉬움이 남지만 앞으로 두세 번 더 제가 손을 본 후 정식 공개 배포할 예정입니다.}
+\begin{quotation}
+\noindent
+Copyright \copyright\  2011  Sajang Yang.
+
+\noindent
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License". \\
+
+
+\noindent
+Copyright \copyright\ 2011  Sajang Yang
+
+\noindent
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+\noindent
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+\noindent
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see \url{http://www.gnu.org/licenses/}.
+\end{quotation}
+
+\subsection{The R environment}
+R 입문서 참조.\footnote{영어 원본은 \cite{R-intro}, 한글 번역본은 \cite{R-intro-ko}를 참조하세요. 일부러 참조하기 편하도록 각 장과 절 번호를 R 입문서 장과 절 번호와 일치시켰습니다. 이미 번역판이 있는 데, 굳이 똑 같은 내용을 이 문서에 담아야할 필요성을 느낄 수 없어 원본 내용은 생략합니다. %%또 짧은 휴가 기간에 짬을 내어서 만든 문서라 시간이 많이 필요한 원본 내용 복사에는 시간이 모자랐습니다. 
+또 제가 읽을 것만 추려서 조그맣게 만드려는 애초 목적이 있었습니다. 11장 이후는 아직 R초보자인 저의 이해가 부족해 많이 생략하였습니다. 이 문서는 GPL/GFDL 문서이니 원하시는 대로 수정/배포 가능하니 마음에 안 드시면 편하게 바꾸시든 지 직접 보충해서 사용하시면 되겠습니다. 또 혹시라도 번역 내용을 이 문서에 넣어달라는 요구가 있을까봐 미리 정중히 사양하고 싶습니다.}
+
+%%R 입문서 참조.\footnote{영어 원본은 \cite{R-intro}, 한글 번역본은 \cite{R-intro-ko}를 참조하세요. 일부러 참조하기 편하도록 각 장과 절 번호를 R 입문서 장과 절 번호와 일치시켰습니다. 이미 번역판이 있는 데, 굳이 똑 같은 내용을 이 문서에 담아야할 필요성을 느낄 수 없어 원본 내용은 생략합니다. 또 짧은 휴가 기간에 짬을 내어서 만든 문서라 시간이 많이 필요한 원본 내용 복사에는 시간이 모자랐습니다. 또 제가 읽을 것만 추려서 조그맣게 만드려는 애초 목적이 있었습니다. 11장 이후는 조금 고급 활용인데, 제 소견에 너무 간략하여 다른 고급 매뉴얼을 참조하는 게 바람직할 것 같아, 많이 생략하였습니다. 이 문서는 GPL/GFDL 문서이니 원하시는 대로 수정/배포 가능하니 마음에 안 드시면 편하게 바꾸시든 지 직접 보충해서 사용하시면 되겠습니다. 또 혹시라도 번역 내용을 이 문서에 넣어달라는 요구가 있을까봐 미리 정중히 사양하고 싶습니다.}
+\subsection{Related software and documentation}
+R 입문서 참조.
+\subsection{R and statistics}
+R 입문서 참조.
+\subsection{R and the window system}
+R 입문서 참조.
+\subsection{Using R interactively}
+R 실행 화면에서 프로그램을 끝내고 싶을 때에는 다음과 같이 \texttt{q()}를 입력합니다.
+<<subsec1_5.R, eval=FALSE>>=
+q()
+@ %def q()
+\index{q()}
+\subsection{An introductory session}
+R 입문서 참조.
+\subsection{Getting help with functions and features}
+R에서 도움말을 얻기 위해서는 다음과 같은 명령들을 입력합니다. 무슨 뜻인 지 전혀 감이 없으시면 
+\texttt{?help}에서 시작하시는 것도 나쁘지 않지요.
+<<subsec1_7.R, eval=FALSE, keep.source=TRUE>>=
+help(solve)
+?solve
+help("[[")
+help.start()
+??solve
+example(topic)
+?help
+@ % help() help.start() example()
+\index{help()}
+\index{help.start()}
+\index{example()}
+\index{?}
+\index{??}
+
+\subsection{R commands, case sensitivity, etc.}
+R 입문서 참조.
+\subsection{Recall and correction of previous commands}
+R 입문서 참조.
+\subsection{Executing commands from or diverting output to a file}
+미리 입력된 명령들을 파일에 담아 통째로 실행시킬 때, \texttt{source()} 명령을, 출력하면을 
+파일로 리다이렉트할 때에는 \texttt{sink} 명령을 씁니다.\footnote{ 프로그래밍이 가능해지는  
+괜찮은 기능이지요.}
+<<subsec1_10.R, eval=FALSE, keep.source=TRUE>>=
+source("commands.R")
+sink("record.lis")
+@
+\index{source()}
+\index{sink()}
+
+\subsection{Data permanency and removing objects}
+오브젝트(변수, 어레이, 문자열, 함수, 따위들)는 R 세션 중 ``workspace''에 저장되는 데, 
+어떤게 있는 지 보고 싶을 때, 지워버리고 싶을 때 다음 명령들을 참조하세요. 
+<<subsec1_11.R, keep.source=TRUE>>=
+rm(list=ls())
+objects()
+x <- 1+1;x
+objects()
+ls()
+@
+
+R 세션 중에 만들어진 모든 오브젝트는 나중을 위해서 파일에 저장 가능한데요, 보통 세션 종료시에
+저장하지 말지 물어보구요, `current' 디렉토리 밑에 `.RData'로 저장됩니다. 세션 중에 사용된
+명령들은 `.Rhistory'란 파일명으로 저장됩니다.
+
+\index{rm()}
+\index{objects()}
+\index{ls()}
+\index{.RData}
+\index{.Rhistory}
+
+\section{Simple manipulations; numbers and vectors}
+\subsection{Vectors and assignment}
+벡터는 갯수(length)와 모드로 나타낼 수 있는 오브젝트이다. 
+<<subsec2_1.R, keep.source=TRUE>>=
+x <- c(10.4, 5.6, 3.1, 6.4, 21.7); x
+assign("x", c(10.4, 5.6, 3.1, 6.4, 21.7)); x
+c(10.4, 5.6, 3.1, 6.4, 21.7) -> x; x
+x = c(10.4, 5.6, 3.1, 6.4, 21.7); x
+1/x
+y <- c(x, 0, x); y
+@
+\index{<-}
+\index{->}
+\index{assign}
+\index{c()}
+
+\subsection{Vector arithmetic}
+<<subsec2_2.R, keep.source=TRUE>>=
+2 * x; y
+v <- 2 * x + y + 1; v
+v - (y+1)
+mean(x)
+sum(x)/length(x)
+var(x)
+sum((x-mean(x))^2)/(length(x)-1)
+x; sort(x); order(x); sort.list(x); max(x); min(x); 
+pmax(x, 5); pmin(x, 5)
+sqrt(-1+0i)
+@
+\index{mean()}
+\index{sum()}
+\index{length()}
+\index{var()}
+\index{sort()}
+\index{order()}
+\index{sort.list()}
+\index{max()}
+\index{min()}
+\index{pmax()}
+\index{pmin()}
+\index{sqrt()}
+
+\subsection{Generating regular sequences}
+<<subsec2_3.R, keep.source=TRUE>>=
+options(width=60)
+seq(-5, 5, by=.2) -> s3; s3
+s4 <- seq(length=51, from=-5, to=5); s4
+x <- seq(1, 5, 1); x
+s5 <- rep(x, times=5); s5
+s6 <- rep(x, each=5); s6
+@
+\index{options()}
+\index{width}
+\index{seq()}
+\index{rep()}
+
+\subsection{Logical vectors}
+<<subsec2_4.R, keep.source=TRUE>>=
+x <- c(10.4, 5.6, 3.1, 6.4, 21.7); x
+temp <- x > 13 
+temp ; !temp
+temp | !temp
+temp & !temp
+temp == 1
+temp != 0
+temp <  1
+temp <= 1
+temp >  0
+temp >= 0
+@
+\index{!}
+\index{|}
+\index{\&}
+\index{<, <=, >, >=}
+\index{==}
+
+
+\subsection{Missing values}
+<<subsec2_5.R, keep.source=TRUE>>=
+z <- c(1:3, NA); z
+ind_na <- is.na(z); ind_na
+ind_nan <-is.nan(z); ind_nan
+z <- c(z, 0/0, Inf-Inf); z
+ind_na <- is.na(z); ind_na
+ind_nan <-is.nan(z); ind_nan
+@
+\index{NA}
+\index{NaN}
+\index{is.na()}
+\index{is.nan()}
+\index{Inf}
+
+\subsection{Character vectors}
+<<subsec2_6.R, keep.source=TRUE>>=
+labs <- paste(c("X","Y"), 1:10, sep=""); labs
+labs <- paste(c("X","Y"), rep(1:5, times=2), sep=""); labs
+labs <- paste(c("X","Y"), rep(1:5, each=2), sep=""); labs
+@
+\index{paste()}
+\index{rep()}
+
+\subsection{Index vectors; selecting and modifying subsets of a data set}
+
+\begin{itemize}
+\item A logical vector
+\item A vector of positive integral quantaties
+\item A vector of negative integral quantities
+\item A vector of character strings
+\end{itemize}
+
+<<subsec2_7.R, keep.source=TRUE>>=
+#A logical vector
+x <- z; x
+y <- x[!is.na(x)]; y
+(x+1)[(!is.na(x)) & x>0] ->z; z
+#A vector of positive integral quantities
+x <- c(1:20);x
+x[1:10]
+c("x", "y")[rep(c(1,2,2,1), times=4)]
+#A vector of negative integral quatities
+y <- x[-(1:5)]; y
+#A vector of character strings
+fruit <- c(5, 10, 1, 20); fruit
+names(fruit) <-c("orange", "banana", "apple", "peach"); fruit
+lunch <- fruit[c("apple", "orange")]; lunch
+x <- c(x, NA, Inf/Inf); x
+x[is.na(x)] <- 0; x
+y <- c(x, -1, -2, -3); y
+y[y<0] <- -y[y<0]; y
+y <- c(x, -1, -2, -3); y
+y <- abs(y); y
+@
+\index{names()}
+\index{abs()}
+
+\subsection{Other types of objects}
+\begin{itemize}
+\item matrices
+\item factors
+\item lists
+\item data frames
+\item functions
+\end{itemize}
+
+
+\section{Objects, their modes and attributes}
+\subsection{Intrinsic attributes: mode and length}
+R 입문서 참조. \\
+함수 \texttt{mode(\emph{object})}와 \texttt{length(\emph{object})}는 오브젝트의 모드\footnote{모드는 다른 언어의 변수형이나 타입(type)에 해당된다고 이해하면 쉽습니다.}와 길이를 파악하는 데 사용되지요. 예를 들면,
+<<subsec3_1.R, keep.source=TRUE>>=
+z <- c(1:100); z
+z <- z+1i; z
+mode(z)
+length(z)
+@
+\index{mode()}
+\index{length()}
+\index{object}
+
+다른 언어의 형변환(type casting)에 해당하는 모드 변환을 다음과 같이 할 수 있습니다.
+<<subsec3_1.R, keep.source=TRUE>>=
+z <- 0:9; z
+digits <- as.character(z); digits
+d <- as.integer(digits); d
+@
+\index{mode change}
+\index{type casting}
+\index{as.character()}
+\index{as.integer()}
+
+보시는 것처럼 모드 변환을 (integer에서 character로, 그리고 그 역변환인 character에서 integer로) 두 번  거쳐서 d와 z는 같아졌습니다.
+
+\subsection{Changing the length of an object}
+
+빈(空, empty) 오브젝트도 모드를 가질 수 있지요, 예를 들자면
+<<subsec3_2.R>>=
+e <- numeric(); e
+@
+위의 \texttt{e}는 numeric 모드의 빈 벡터 구조가 되는 거지요. 비슷하게 \texttt{character()}도 빈 character 벡터 구조를 만듭니다.어떤 크기든 지 오브젝트가
+하나 생기면, 쉽게 새 컴포넌트를 추가할 수 있습니다.
+
+<<subsec3_2.R>>=
+e[3] <- 17; e
+@
+위 코드를 실행하면 이제 \texttt{e}는 길이가 3인 벡터가 되는 것이죠. 이런 자동 길이 조정은
+아주 자주 쓰입니다. 반대로 벡터를 싹둑 잘라내서 길이를 줄이고 싶을 때는 그렇게 되도록 다시 지정(assignment)해 주면 됩니다.
+<<subsec3_2.R, keep.source=TRUE>>=
+alpha <- 1:10; alpha
+alpha <- alpha[2*1:5]; alpha
+length(alpha) <-3; alpha
+@
+위 코드에서 짝수 컴포넌트만 뽑아내는 것이 보이죠.\footnote{참 간편하네요. 길이를 강제로 줄여서 벡터를 잘라내는 것도 아주 인상적이네요.} 
+\index{changing the length of an object}
+
+\subsection{Getting and setting attributes}
+
+함수 \texttt{attributes(\emph{object})}는 ``non-intrisic'' 속성의 전체 리스트를 보여줍니다. 함수 \texttt{attr(\emph{object, name})}은 \texttt{\emph{name}}으로 선택한 원하는 속성만 보고 싶을 때 쓰지요. \texttt{attr(\emph{object, name})} 함수가 지정 명령의 왼쪽에 오면 \texttt{\emph{object}}의 속성을 변경하거나 새로운 속성을 추가하는 데 쓰일 수 있습니다. 밑에 예를 보세요.
+
+<<subsec3_3.R, keep.source=TRUE>>=
+rm(list=ls())
+z <- 1:100;z
+attributes(z)
+attr(z, "dim")
+attr(z, "dim") <- c(10,10);z
+attr(z, "dim")
+@
+\index{attributes()}
+\index{attr()}
+
+\subsection{The class of an object}
+모든 오브젝트는 클래스(class)를 가지고, 함수 \texttt{class()}로 확인할 수 있습니다.
+단순한 (한 모드로 이루어진) 벡터의 클래스는 바로 모드가 되고요, ``\texttt{matrix}'', 
+``\texttt{array}'', ``\texttt{factor}'', 그리고 ``\texttt{data.frame}''도
+가능한 클래스 종류가 됩니다.
+
+이 클래스를 통하여 오브젝트 오리엔티드 프로그래밍을 가능하게 하는 데\ldots 자세한 내용은
+R 입문서 참조. \\
+
+클래스의 효과를 잠시 동안 없애버리려면 함수 \texttt{unclass()}를 쓰시면 됩니다.
+
+<<subsec3_4.R, keep.source=TRUE>>=
+winter <- as.data.frame(1:10)
+winter
+class(winter)
+attributes(winter)
+unclass(winter)
+class(winter)
+@
+\index{class()}
+\index{as.data.frame()}
+\index{unclass()}
+
+\section{Ordered and unordered factors}
+R 입문서 참조. \\
+\subsection{A specific example}
+예를 들어 호주\footnote{호주에는 8개 주와 경계가 있다고 합니다. 이름을 들어보면, the Australian Capital Territory, New South Wales, the Northern Territory,
+Queensland, South Australia, Tasmania, Victoria, 그리고 Western Australia입니다.}
+각 주와 경계에 흩어사는 30명 세무사가 있다고 칩시다. 출신 주를 다음과 
+같이 표시할 수 있습니다. 
+
+<<subsec4_1.R, keep.source=TRUE>>=
+state <- c("tas", "sa",  "qld", "nsw", "nsw", "nt",  "wa",  "wa",
+           "qld", "vic", "nsw", "vic", "qld", "qld", "sa",  "tas",
+           "sa",  "nt",  "wa",  "vic", "qld", "nsw", "nsw", "wa",
+           "sa",  "act", "nsw", "vic", "vic", "act"); state
+sort(state)
+@
+\texttt{factor()}함수로 정렬시킬 수 있으며, 정렬됐다는 것은 알파벳 순서대로 줄지었다는
+말입니다. \texttt{factor()}함수로 \emph{factor}를 만들 수 있습니다.
+<<subsec4_1.R, keep.source=TRUE>>=
+statef <- factor(state); statef 
+@
+레벨만 따로 보고 싶으면 \texttt{levels()}함수를 써도 됩니다.
+<<subsec4_1.R, keep.source=TRUE>>=
+levels(statef)
+@
+\index{factor()}
+\index{sort()}
+\index{levels()}
+
+\subsection{The function \texttt{tapply()} and ragged array}
+앞 세무사 예를 이어서, 이제 각 세무사 수입을 다른 벡터로 나타내 봅니다.
+
+<<subsec4_2.R, keep.source=TRUE>>=
+incomes <- c(60, 49, 40, 61, 64, 60, 59, 54, 62, 69, 70, 42, 56,
+             61, 61, 61, 58, 51, 48, 65, 49, 49, 41, 48, 52, 46,
+             59, 46, 58, 43); incomes
+@
+
+각 주별로 수입 표본 평균을 구하기 위해서 \texttt{tapply()}함수를 사용해 봅니다.
+<<subsec4_2.R, keep.source=TRUE>>=
+incmeans <- tapply(incomes, statef, mean); incmeans
+@
+각 레벨로 표시된 평균 벡터들이 생겨나지요.
+\texttt{tapply()}함수는 다른 함수(여기서는 \texttt{mean()})를 첫째 함수 
+인자(argument)인 \texttt{income}에 두번째 인자인 \texttt{statef} 레벨에 맞춰
+적용하는 것입니다. \footnote{음\ldots 참 신기하네요.} 
+\index{tapply()}
+<<subsec4_2.R, keep.source=TRUE>>=
+incmeans_without_factor <- tapply(incomes, state, mean)
+incmeans_without_factor
+@  
+이제 주별 수입 평균의 표준 오차(standard error)를 구한다고 칩시다. 표준 오차를 구하는 
+함수를 우선 만들어 볼까요:
+<<subsec4_2.R, keep.source=TRUE>>=
+stderr <- function(x) sqrt(var(x)/length(x))
+@
+자, 이제 \texttt{tapply()}함수를 다시 한 번 새로 정의한 함수로 적용해봅니다. 
+<<subsec4_2.R, keep.source=TRUE>>=
+incster <- tapply(incomes, statef, stderr); incster
+lengths <- tapply(incomes, statef, length); lengths
+@
+위 예에서 본 것처럼 (결과) 벡터와 labelling factor를 같이 보여주는 걸 소위 ``누더기 어레이'' (\emph{ragged array})라고 하는 데요, 각 subclass의 크기가 제각각이기 (irregular)
+때문이지요.
+\index{표본 평균}
+\index{sample mean}
+\index{tapply()}
+\index{ragged array}
+\index{누더기 어레이}
+\index{mean()}
+\index{standard error}
+\index{표준 오차}
+\index{length()}
+\index{sqrt()}
+
+\subsection{Ordered factors}
+R 입문서 참조.
+
+\section{Arrays and matrices}
+\subsection{Arrays}
+어레이는 (하나 이상) 차원(Dimension)을 가지는 벡터이다.
+150 개 원소로 구성된 벡터 z가 있습니다.\footnote{원래는 1500 개였는 데, 프린트하면
+쓸 데 없이 페이지 수가 늘어나기 때문에 제 맘대로 150 개로 줄였습니다.} \emph{dimension}을 아래처럼 적용해 볼까요?
+<<subsec5_1.R, keep.source=TRUE>>=
+rm(list=ls())
+z <- 1:150; z
+dim(z) <- c(3, 5, 10); z
+@
+\texttt{matrix()}나 \texttt{array()}같은 함수로 간단히 자연스럽게 어레이를 만들 수 
+있습니다. 일차원 어레이도 있지만, 그런 어레이는 대개 벡터와 마찬가지로 취급받습니다. 벡터가
+있는 데, 일부러 일차원 어레이를 만들 필요는 없겠지요.   
+\index{vector}
+\index{벡터}
+\index{array}
+\index{어레이}
+\index{dim()}
+\index{dimension}
+\index{rm()}
+\index{ls()}
+\index{matrix()}
+\index{array()}
+\index{일차원 어레이}
+
+\subsection{Array indexing. Subsections of an array}
+R 입문서 참조.
+<<subsec5_2.R, keep.source=TRUE>>=
+a <- 1:(2*4*2); dim(a) <- c(2,4,2); a[,,]
+c( a[2,1,1], a[2,2,1], a[2,3,1], a[2,4,1],
+   a[2,1,2], a[2,2,2], a[2,3,2], a[2,4,2])
+a[2,,]
+dim(a); dim(a[2,,])
+@
+
+\subsection{Index matrices}
+예를 먼저 보고, 인덱스 행렬(index matrix)이 뭔 지 감을 잡아볼까요? 예를 들어, 4x5 크기 어레이 \texttt{X}가 있고, 다음을 해보려 합니다.
+\begin{itemize}
+\item \texttt{X[1,3]}, \texttt{X[2,2]}, 그리고 \texttt{X[3,1]}의 원소를 추출
+\item 추출된 항목 자리를 0으로 바꾸기
+\end{itemize}
+
+<<subsec5_3.R, keep.source=TRUE>>=
+x <- array(1:20, dim=c(4,5)); x
+i <- array(c(1:3,3:1), dim=c(3,2)); i
+x[i] <-0
+x
+@
+위 예에서 어레이 \texttt{i}는 인덱스 행렬입니다.
+
+\index{array()}
+\index{index matrix}
+\index{인덱스 행렬}
+
+부정(negative) 인덱스는 인덱스 행렬에 사용할 수 없습니다. \texttt{NA}나 0은 사용 가능합니다. 예를 더 들어 보겠습니다.
+
+<<subsec5_3.R, keep.source=TRUE>>=
+blocks <- 1:4; blocks
+b <- length(levels(factor(blocks))); b
+varieties <- 1:4; varieties
+v <- length(levels(factor(varieties))); v
+n <- 4; n
+Xb <- matrix(0, n, b); Xb
+Xv <- matrix(0, n, v); Xv
+ib <- cbind(1:n, blocks); ib
+iv <- cbind(1:n, varieties); iv
+Xb[ib] <- 1; Xb
+Xv[iv] <- 1; Xv
+X <- cbind(Xb, Xv); X
+N <- crossprod(Xb, Xv); N
+N <- table(blocks, varieties); N
+@
+\index{factor()}
+\index{levels()}
+\index{length()}
+\index{matrix()}
+\index{cbind()}
+\index{cossprod()}
+\index{table}
+
+\subsection{The \texttt{array()} function}
+
+<<subsec5_4.R, keep.source=TRUE>>=
+h <- 1:10; h
+Z <- array(h, dim=c(3,4,2)); Z
+h <- 1:24; h
+Z <- array(h, dim=c(3,4,2)); Z
+@
+\index{array()}
+
+\subsubsection{Mixed vector and array arithmetic. The recycling rule}
+R 입문서 참조.
+
+\subsection{The outer product of two arrays}
+
+<<subsec5_5.R, keep.source=TRUE>>=
+a <- 1:4; a
+b <- c(1, 0, 2, 3); b
+ab <- a %o% b; ab
+ab <- outer(a, b, "*"); ab
+x <- seq(0, 2*pi, by=0.1); x
+y <- seq(0, 2*pi, by=0.1); y
+f <- function(x, y) cos(y)/(1+x^2)
+z <- outer(x, y, f)
+@
+\index{outer}
+\index{\%o\%}
+\index{seq()}
+\index{cos()}
+
+<<subsec5_5.R, eval=FALSE, keep.source=TRUE>>=
+persp(x, y, z)
+contour(x, y, z)
+@
+\index{persp()}
+\index{cos()}
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE, keep.source=TRUE>>=
+persp(x, y, z)
+@
+\end{center}
+\caption{persp plot}
+\label{fig:persp-plot}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+contour(x, y, z)
+@
+\end{center}
+\caption{contour plot}
+\label{fig:contour-plot}
+\end{figure}
+
+
+<<subsec5_5.R, keep.source=TRUE>>=
+d <- outer(0:9, 0:9); d
+fr <- table(outer(d, d, "-")); fr
+@
+<<subsec5_5.R, eval=FALSE, keep.source=TRUE>>=
+plot(as.numeric(names(fr)), fr, type="h", xlab="Determinant", 
+ylab="Frequency")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(as.numeric(names(fr)), fr, type="h", xlab="Determinant", ylab="Frequency")
+@
+\end{center}
+\caption{Determinant Example plot}
+\label{fig:det-ex-plot}
+\end{figure}
+
+\index{table()}
+\index{as.numeric()}
+\index{plot()}
+
+\subsection{Generalized transpose of an array}
+R 입문서 참조.
+
+<<subsec5_6.R, keep.source=TRUE>>=
+A <- rbind(c(11, 12), c(21, 22)); A
+B <- aperm(A, c(2, 1)); B
+B <- t(A); B
+A <- 1:27; dim(A) <- c(3, 3, 3); A
+B <- aperm(A, c(2, 1, 3)); B
+B <- aperm(A, c(3, 2, 1)); B
+@
+
+\index{rbind()}
+\index{aperm()}
+\index{t()}
+\index{dim()}
+
+\subsection{Matrix facilities}
+R 입문서 참조.
+\subsubsection{Matrix multiplication}
+R 입문서 참조.
+<<subsubsec5_7_1.R, results=verbatim, keep.source=TRUE>>=
+A <- c(1, 1, 1, 1); A
+B <- c(1, 2, 3, 4); B <- t(B); B
+A * B
+C <- A %*% B; C
+D <- C * C; D
+D <- C %*% C; D
+x <- A; x
+A <- C; A
+x %*% A %*% x
+rbind(x) %*% A %*% cbind(x)
+rbind(x) %*% crossprod(A, cbind(x))
+crossprod(x, crossprod(A, cbind(x)))
+crossprod(rbind(x), t(crossprod(A, cbind(x))))
+I <- diag(c(1, 1, 1)); I
+diag(I)
+@
+\index{t()}
+\index{rbind()}
+\index{cbind()}
+\index{crossprod()}
+\index{diag()}
+
+\subsubsection{Linear equations and inversion}
+R 입문서 참조.
+<<subsubsec5_7_2.R, keep.source=TRUE>>=
+A <- diag(c(5, 1, 1, 1)); A
+x <- 1:4; x
+b <- A %*% x; b
+solve(A)
+solve(A, b)
+solve(A) %*% b
+@
+
+\index{diag()}
+\index{solve()}
+
+\subsubsection{Eigenvalues and eigenvectors}
+R 입문서 참조.
+<<subsubsec5_7_3.R, keep.source=TRUE>>=
+Sm <- diag(c(1, 2, 3, 4)); Sm
+ev <- eigen(Sm); ev
+evals <- eigen(Sm)$values
+evals <- eigen(Sm, only.values = TRUE)$values
+@
+
+\subsubsection{Singular value decomposition and determinants}
+R 입문서 참조.
+<<subsubsec5_7_4.R, keep.source=TRUE>>=
+M <- diag(c(1, 2, 3, 4)); M
+svd(M)
+absdetM <- prod(svd(M)$d); absdetM
+absdet <- function(M) prod(svd(M)$d)
+adM <- absdet(M); adM
+@
+
+\index{diag()}
+\index{prod()}
+\index{svd()}
+\index{function()}
+
+\subsubsection{Least squares fitting and the QR decomposition}
+R 입문서 참조.
+
+<<subsubsec5_7_5.R, keep.source=TRUE>>=
+X <- seq(-10, 10, by=0.5); X
+y <- (2*X)+rnorm(length(X)); y
+ans <- lsfit(X, y); ans
+ans <- lm(y ~ X); ans
+@
+\index{lsfit()}
+\index{lm()}
+
+<<subsubsec5_7_5.R, eval=FALSE, keep.source=TRUE>>=
+plot(X, y)
+abline(ans$coefficients)
+grid()
+@
+\index{plot()}
+\index{abline()}
+\index{grid()}
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(X, y)
+abline(ans$coefficients)
+grid()
+@
+\end{center}
+\caption{Least square fitting using lsfit()}
+\label{fig:lsfit}
+\end{figure}
+
+<<subsubsec5_7_5.R, keep.source=TRUE>>=
+Xplus <- qr(X); Xplus
+b <- qr.coef(Xplus, y); b
+fit <- qr.fitted(Xplus, y); fit
+res <- qr.resid(Xplus, y); res
+@
+\index{qr()}
+\index{qr.coef()}
+\index{qr.fitted()}
+\index{fr.resid()}
+
+\subsection{Formatting partitioned matrices, \texttt{cbind()} and \texttt{rbind()}}
+R 입문서 참조.
+\index{cbind()}
+\index{rbind()}
+
+\subsection{The concatenation function, \texttt{c()}, with arrays}
+R 입문서 참조.
+\index{c()}
+\index{as.vector()}
+
+\subsection{Frequency tables from factors}
+R 입문서 참조.
+<<subsec5_10.R, echo=FALSE, keep.source=TRUE>>=
+state <- c("tas", "sa",  "qld", "nsw", "nsw", "nt",  "wa",  "wa",
+           "qld", "vic", "nsw", "vic", "qld", "qld", "sa",  "tas",
+           "sa",  "nt",  "wa",  "vic", "qld", "nsw", "nsw", "wa",
+           "sa",  "act", "nsw", "vic", "vic", "act")
+statef <- factor(state) 
+incomes <- c(60, 49, 40, 61, 64, 60, 59, 54, 62, 69, 70, 42, 56,
+             61, 61, 61, 58, 51, 48, 65, 49, 49, 41, 48, 52, 46,
+             59, 46, 58, 43)
+@
+<<subsec5_10.R, keep.source=TRUE>>=
+statefr <- table(statef); statefr
+statefr <- tapply(statef, statef, length); statefr
+factor(cut(incomes, breaks = 35+10*(0:7))) -> incomef
+table(incomef, statef)
+@
+\index{table()}
+\index{tapply()}
+\index{cut()}
+
+\section{Lists and data frames}
+\index{list}
+
+\subsection{Lists}
+R 입문서 참조.
+<<subsec6_1.R, keep.source=TRUE>>=
+Lst <- list(name="Fred", wife="Mary", no.children=3, 
+child.ages=c(4, 7, 9))
+Lst; length(Lst); Lst[1]; Lst[[1]]; length(Lst[4]); length(Lst[[4]])
+Lst$name; Lst$wife; Lst$no.children; Lst$child.ages; Lst$child.ages[1]
+Lst[[1]]; Lst[[2]]; Lst[[3]]; Lst[[4]][2]; x <- "name"; Lst[[x]]
+@
+\index{list()}
+\index{\$}
+\index{[[]]}
+\index{[]}
+\index{list creation}
+
+\subsection{Constructing and modifying lists}
+R 입문서 참조.
+<<subsec6_2.R, keep.source=TRUE>>=
+Mat <- rbind(1:4); Mat
+Lst[5] <- list(matrix=Mat); Lst
+@
+\index{list extension}
+
+\subsubsection{Concatenating lists}
+R 입문서 참조.
+<<subsubsec6_2_1.R, keep.source=TRUE>>=
+list.A <- Lst; list.A; list.B <- Lst; list.C <- Lst
+list.ABC <- c(list.A, list.B, list.C); list.ABC
+@
+\index{list concatenation}
+
+\subsection{Data frames}
+R 입문서 참조.
+\index{data frame}
+\index{data.frame}
+
+\subsubsection{Making data frames}
+R 입문서 참조.
+<<subsubsec6_3_1.R, keep.source=TRUE>>=
+accountants <- data.frame(home=statef, loot=incomes, shot=incomef)
+accountants
+@
+\index{data frame creation}
+\index{data.frame()}
+\index{as.data.frame()}
+\index{read.table()}
+
+\subsubsection{\texttt{attach()} and \texttt{detach()}}
+R 입문서 참조.
+<<subsubsec6_3_2.R, keep.source=TRUE>>=
+rm(list=ls())
+lentils <- data.frame(u=1, v=2, w=3); lentils
+lentils$u
+lentils$v
+lentils$w
+attach(lentils)
+u; v; w
+u <- v+w; u
+detach(lentils)
+lentils$u; u
+attach(lentils)
+detach(lentils)
+rm(list=ls())
+lentils <- data.frame(u=1, v=2, w=3); lentils
+attach(lentils); u; v; w
+lentils$u <- v+w
+detach(lentils)
+lentils$u; #u
+@
+\index{attach()}
+\index{detach()}
+\index{data.frame()}
+\index{rm()}
+\index{\$}
+\index{search path}
+\index{position 2}
+
+\subsubsection{Working with data frames}
+R 입문서 참조. 꼭 한 번 읽어보시고요.
+
+\subsubsection{Attaching arbitrary lists}
+R 입문서 참조.
+
+\subsubsection{Managing the search path}
+
+<<subsubsec6_3_5.R, keep.source=TRUE>>=
+search()
+lentils <- data.frame(u=1, v=2, w=3); lentils
+attach(lentils)
+search()
+ls(2)
+detach(lentils)
+search()
+@
+\index{search()}
+\index{search path}
+\index{position 2}
+\index{data.frame()}
+\index{attach()}
+\index{detach()}
+\index{ls()}
+
+\section{Reading data from files}
+R 입문서 참조.
+\index{read.table()}
+\index{scan()}
+\index{R Data Import/Export \cite{R-import}}
+
+\subsection{The \texttt{read.table()} function}
+R 입문서 참조.
+<<subsec7_1.R, keep.source=TRUE>>=
+houses.data <- data.frame(Price = c(52.00, 54.75, 57.50, 57.50, 59.75))
+Floor = c(111.0, 128.0, 101.0, 131.0, 93.0)
+Area = c(830, 710, 1000, 690, 900)
+Rooms = c(5, 5, 5, 6, 5)
+Age = c(6.2, 7.5, 4.2, 8.8, 1.9)
+Cent.heat = c("no", "no", "no", "no", "yes")
+houses.data$Floor <- Floor
+houses.data$Area <- Area
+houses.data$Rooms <- Rooms
+houses.data$Age <- Age
+houses.data$Cent.heat <- Cent.heat; houses.data
+write.table(houses.data, "houses.data")
+HousePrice <- read.table("houses.data")
+HousePrice
+@
+\index{data.frame()}
+\index{write.table()}
+\index{read.table()}  
+
+\subsection{The \texttt{scan()} function}
+R 입문서 참조.
+<<subsec7_2.R, keep.source=TRUE>>=
+cat("abc 1 1", "def 2 2", "ghi 3 3", file="input.dat", sep="\n")
+inp <- scan("input.dat", list("", 0, 0)); inp
+label <- inp[[1]]; label
+x <- inp[[2]]; x
+y <- inp[[3]]; y 
+inp <- scan("input.dat", list(id="", x=0, y=0)); inp
+label <- inp$id; label
+x <- inp$x; x
+y <- inp$y; y
+cat(1:20, file="light.dat")
+X <- matrix(scan("light.dat", 0), ncol=5, byrow=TRUE); X
+@
+\index{scan()}
+\index{cat()}
+\index{list()}
+\index{[[]]}
+\index{matrix()}
+
+\subsection{Accessing builtin datasets}
+R 입문서 참조.
+\index{data()}
+
+\subsubsection{Loading data from other R packages}
+R 입문서 참조.
+<<subsubsec7_3_1.R, keep.source=TRUE>>=
+data(package="rpart")
+data(Puromycin, package="datasets")
+@
+\index{data()}
+
+\subsection{Editing data}
+R 입문서 참조.
+
+<<subsec7_4.R, eval=FALSE, keep.source=TRUE>>=
+xold <- c(1:10); xold
+xnew <- edit(xold)
+xnew <- edit(data.frame())
+@
+\index{edit()}
+\index{edit(data.frame())}
+
+\section{Probability distributions}
+\subsection{R as a set of statistical tables}
+R 입문서 참조.
+
+<<subsec8_1.R, keep.source=TRUE>>=
+## 2-tailed p-value for t distribution
+2*pt(-2.43, df = 13)
+## upper 1% point for an F(2, 7) distribution
+qf(0.01, 2, 7, lower.tail = FALSE)
+@
+\index{t(), pt()}
+\index{f(), qf()}
+
+\subsection{Examining the distribution of a set of data}
+R 입문서 참조.
+
+<<subsec8_2.R, keep.source=TRUE>>=
+faithful; summary(faithful)
+attach(faithful)
+summary(eruptions)
+fivenum(eruptions)
+stem(eruptions)
+@
+\index{summary()}
+\index{attach()}
+\index{fivenum()}
+\index{stem()}
+
+\newpage
+<<subsec8_2.R, keep.source=TRUE, eval=FALSE>>=
+hist(eruptions)
+## make the bins smaller, make a plot of density
+hist(eruptions, seq(1.6, 5.2, 0.2), prob=TRUE)
+lines(density(eruptions, bw=0.1))
+rug(eruptions) # show the actual data points
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+hist(eruptions)
+@
+\end{center}
+\caption{The histogram from ``hist(eruptions)''}
+\label{fig:hist-eruptions}
+\end{figure}
+
+\index{hist()}
+\index{seq()}
+\index{lines()}
+\index{desity()}
+\index{rug()}
+
+
+
+\newpage
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+hist(eruptions, seq(1.6, 5.2, 0.2), prob=TRUE)
+lines(density(eruptions, bw=0.1))
+rug(eruptions) # show the actual data points
+@
+\end{center}
+\caption{The histogram from ``hist(eruptions, seq(1.6, 5.2, 0.2)''}
+\label{fig:hist-eruptions2}
+\end{figure}
+
+
+
+\newpage
+<<subsec8_2.R, eval=FALSE, keep.source=TRUE>>=
+plot(ecdf(eruptions), do.points=FALSE, verticals=TRUE)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(ecdf(eruptions), do.points=FALSE, verticals=TRUE)
+@
+\end{center}
+\caption{The plot of plot(ecdf(eruptions), do.points=FALSE, verticals=TRUE)''}
+\label{fig:plot8-2-1}
+\end{figure}
+
+\index{plot()}
+\index{ecdf()}
+
+
+\newpage
+<<subsec8_2.R, keep.source=TRUE>>=
+long <- eruptions[eruptions > 3]
+@
+<<subsec8_2.R, eval=FALSE, keep.source=TRUE>>=
+plot(ecdf(long), do.points=FALSE, verticals=TRUE)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE, keep.source=TRUE>>=
+plot(ecdf(long), do.points=FALSE, verticals=TRUE)
+@
+\end{center}
+\caption{The plot of plot(ecdf(long), do.points=FALSE, verticals=TRUE)''}
+\label{fig:plot8-2-2}
+\end{figure}
+\newpage
+<<subsec8_2.R, keep.source=TRUE>>=
+x <- seq(3, 5.4, 0.01)
+@
+<<subsec8_2.R, eval=FALSE, keep.source=TRUE>>=
+lines(x, pnorm(x, mean=mean(long), sd=sqrt(var(long))), lty=3)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(ecdf(long), do.points=FALSE, verticals=TRUE)
+lines(x, pnorm(x, mean=mean(long), sd=sqrt(var(long))), lty=3)
+@
+\end{center}
+\caption{The plot of lines(x, pnorm(x, mean=mean(long), sd=sqrt(var(long))), lty=3)''}
+\label{fig:plot8-2-3}
+\end{figure}
+
+\index{sqrt()}
+\index{var()}
+\index{mean()}
+\index{norm(), pnorm()}
+
+\newpage
+<<subsec8_2.R, keep.source=TRUE, eval=FALSE>>=
+par(pty="s")      # arrange for a square figure region
+qqnorm(long); qqline(long)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+par(pty="s")      # arrange for a square figure region
+qqnorm(long); qqline(long)
+@
+\end{center}
+\caption{The qqnorm and qqline}
+\label{fig:plot8-2-4}
+\end{figure}
+
+\index{par()}
+\index{qqnorm()}
+\index{qqline()}
+
+\newpage
+
+<<subsec8_2.R, eval=FALSE, keep.source=TRUE>>=
+x <- rt(250, df = 5)
+qqnorm(x); qqline(x)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+x <- rt(250, df = 5)
+qqnorm(x); qqline(x)
+@
+\end{center}
+\caption{The qqnorm and qqline of t distribution}
+\label{fig:plot8-2-5}
+\end{figure}
+
+\newpage
+
+<<subsec8_2.R, eval=FALSE, keep.source=TRUE>>=
+qqplot(qt(ppoints(250), df = 5), x, xlab = "Q-Q plot for t dsn")
+qqline(x)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+qqplot(qt(ppoints(250), df = 5), x, xlab = "Q-Q plot for t dsn")
+qqline(x)
+@
+\end{center}
+\caption{The qqplot}
+\label{fig:plot8-2-6}
+\end{figure}
+
+\index{qqplot()}
+\index{t(), qt()}
+\index{qqline()}
+
+\newpage
+
+<<subsec8_2.R, keep.source=TRUE>>=
+shapiro.test(long)
+ks.test(long, "pnorm", mean = mean(long), sd = sqrt(var(long)))
+@
+
+<<subsec8_2.R, echo=FALSE, keep.source=TRUE>>=
+detach(faithful)
+@
+
+\index{shapiro.test()}
+\index{ks.test()}
+
+\subsection{One- and two-sample tests}
+R 입문서 참조.
+
+<<subsec8_3.R, eval=FALSE, keep.source=TRUE>>=
+A <- scan()
+B <- scan()
+@
+\index{scan()}
+<<subsec8_3.R, echo=FALSE, keep.source=TRUE>>=
+A <- c(79.98, 80.04, 80.02, 80.04, 80.03, 80.03, 80.04, 79.97, 80.05, 80.03, 80.02, 80.00, 80.02)
+B <- c(80.02, 79.94, 79.98, 79.97, 79.97, 80.03, 79.95, 79.97)
+@
+
+
+
+\newpage
+<<subsec8_3.R, eval=FALSE, keep.source=TRUE>>=
+boxplot(A, B)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+boxplot(A, B)
+@
+\end{center}
+\caption{The boxplot}
+\label{fig:plot8-3-1}
+\end{figure}
+\index{boxplot()}
+
+
+<<subsec8_3.R, keep.source=TRUE>>=
+t.test(A, B)
+var.test(A, B)
+t.test(A, B, var.equal=TRUE)
+wilcox.test(A, B)
+@
+\index{t.test()}
+\index{var.test()}
+\index{wilcox.test()}
+\newpage
+
+<<subsec8_3.R, eval=FALSE, keep.source=TRUE>>=
+plot(ecdf(A), do.points=FALSE, verticals=TRUE, xlim=range(A, B))
+plot(ecdf(B), do.points=FALSE, verticals=TRUE, add=TRUE)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(ecdf(A), do.points=FALSE, verticals=TRUE, xlim=range(A, B))
+plot(ecdf(B), do.points=FALSE, verticals=TRUE, add=TRUE)
+@
+\end{center}
+\caption{The plot ecdf(A) and ecdf(B)}
+\label{fig:plot8-3-2}
+\end{figure}
+\index{ecdf()}
+\index{range()}
+\index{plot(\ldots, add=TRUE)}
+\newpage
+
+<<subsec8_3.R, keep.source=TRUE>>=
+ks.test(A, B)
+@
+\index{ks.test()}
+
+\section{Grouping, loops and conditional execution}
+\subsection{Grouped expression}
+R 입문서 참조.
+
+\subsection{Control statements}
+\subsubsection{Conditional execution: \texttt{if} statements}
+R 입문서 참조.
+
+\subsubsection{Repetitive execution: \texttt{for} loops, \texttt{repeat} and \texttt{while}}
+R 입문서 참조.
+
+<<subsubsec9_2_2.R, keep.source=TRUE>>=
+n <- 10; nn <- 10
+ind <- factor(round(n * runif(n * nn)))
+x <- seq(-10, 10, length.out=(n * nn)) + runif(n * nn)
+y <- seq(-10, 10, length.out=(n * nn)) + runif(n * nn)
+xc <- split(x, ind)
+yc <- split(y, ind)
+@
+<<subsubsec9_2_2.R, eval=FALSE, keep.source=TRUE>>=
+for (i in 1:length(yc)) {
+  plot(xc[[i]], yc[[i]])
+  abline(lsfit(xc[[i]], yc[[i]]))
+}
+@
+\index{unif(), runif()}
+\index{factor()}
+\index{round()}
+\index{seq()}
+\index{split()}
+\index{plot()}
+\index{abline()}
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(xc[[1]], yc[[1]])
+abline(lsfit(xc[[1]], yc[[1]]))
+@
+\end{center}
+\caption{The plot of one of for() loop plots}
+\label{fig:plot9-2-2}
+\end{figure}
+
+
+\section{Writing your own functions}
+R 입문서 참조.
+
+\subsection{Simple examples}
+R 입문서 참조.
+
+<<subsec10_1.R, keep.source=TRUE>>=
+twosam <- function(y1, y2) {
+  n1 <- length(y1); n2 <- length(y2)
+  yb1 <- mean(y1); yb2 <- mean(y2)
+  s1 <- var(y1); s2 <- var(y2)
+  s <- ((n1-1)*s1 + (n2-1)*s2)/(n1+n2-2)
+  tst <- (yb1 - yb2)/sqrt(s*(1/n1 + 1/n2))
+  tst
+}
+data <- data.frame(male=c(runif(50)), female=c(runif(50)))
+tstat <- twosam(data$male, data$female); tstat
+@
+\index{function()}
+\index{data.frame()}
+
+<<subsec10_1.R, keep.source=TRUE>>=
+bslash <- function(X, y) {
+  X <- qr(X)
+  qr.coef(X, y)
+}
+yvar <- 1:4; yvar
+Xmat <- diag(1:4); Xmat
+regcoeff <- bslash(Xmat, yvar); regcoeff
+@
+\index{bslash, bslash()}
+\index{qr()}
+\index{qr.coef()}
+
+\subsection{Defining new binary operator}
+R 입문서 참조.
+
+<<subsec10_2.R, keep.source=TRUE>>=
+"%!%" <- function(X, y) {
+  X <- qr(X)
+  qr.coef(X, y)
+}
+Xmat %!% yvar
+@
+\index{binary operator}
+
+\subsection{Named arguments and defaults}
+R 입문서 참조.
+
+<<subsec10_3.R, keep.source=TRUE>>=
+fun1 <- function(data, data.frame, graph, limit) {
+  data
+  data.frame
+  graph
+  limit
+  return <- 0; return
+}
+d <- 1:10
+df <- data.frame(c(1:5), c(1:5))
+ans <- fun1(d, df, TRUE, 20)
+ans <- fun1(d, df, graph=TRUE, limit=20) 
+ans <- fun1(data=d, limit=20, graph=TRUE, data.frame=df)
+fun1 <- function(data, data.frame, graph=TRUE, limit=20) {
+  data
+  data.frame
+  graph
+  limit
+  return <- 0; return
+}
+ans <- fun1(d, df)
+ans <- fun1(d, df, limit=10)
+@
+
+\subsection{The `\ldots' argument}
+R 입문서 참조.
+
+<<subsec10_4.R, keep.source=TRUE>>=
+fun1 <- function(data, data.frame, graph=TRUE, limit=20, ...) {
+  data
+  data.frame
+  graph
+  limit
+  if(graph)
+    par(pch="*", ...)
+  return <- 0; return
+}
+@
+
+\subsection{Assignments within functions}
+R 입문서 참조.
+
+\index{superassignment}
+\index{assign()}
+
+\subsection{More advanced examples}
+\subsubsection{Efficiency factors in block designs}
+R 입문서 참조.
+
+<<subsubsec10_6_1.R, keep.source=TRUE>>=
+bdeff <- function(blocks, varieties) {
+  blocks <- as.factor(blocks) # minor safety move
+  b <- length(levels(blocks)) 
+  varieties <- as.factor(varieties) # minor safety move
+  v <- length(levels(varieties))
+  K <- as.vector(table(blocks)) # remove dim attr
+  R <- as.vector(table(varieties)) # remove dim attr
+  N <- table(blocks, varieties)
+  A <- 1/sqrt(K) * N * rep(1/sqrt(R), rep(b, v))
+  sv <- svd(A)
+  list(eff=1 - sv$d^2, blockcv=sv$u, varietycv=sv$v)
+}
+@
+
+\index{as.factor()}
+\index{length()}
+\index{levels()}
+\index{as.vector()}
+\index{table()}
+\index{sqrt()}
+\index{rep()}
+\index{svd}
+\index{list()}
+
+
+\subsubsection{Dropping all names in a printed array}
+
+<<subsubsec10_6_2.R, keep.source=TRUE>>=
+temp <- X
+dimnames(temp) <- list(rep("", nrow(X)), rep("", ncol(X)))
+temp; rm(temp)
+
+no.dimnames <- function(a) {
+  ## Remove all dimension names from an array for compact printing.
+  d <- list()
+  l <- 0
+  for(i in dim(a)) {
+    d[[l <- l + 1]] <- rep("", i)
+  }
+  dimnames(a) <- d
+  a
+}
+no.dimnames(X)
+@
+
+\index{dim()}
+\index{nrow()}
+\index{ncol()}
+    
+\subsubsection{Recursive numerical integration}
+R 입문서 참조.
+
+<<subsubsec10_6_3.R, keep.source=TRUE>>=
+area <- function(f, a, b, eps = 1.0e-06, lim = 10) {
+  fun1 <- function(f, a, b, fa, fb, a0, eps, lim, fun) {
+    ## function `fun1' is only visible inside `area'
+    d <- (a + b)/2
+    h <- (b - a)/4
+    fd <- f(d)
+    a1 <- h * (fa + fd)
+    a2 <- h * (fd + fb)
+    if(abs(a0 - a1 - a2) < eps || lim == 0)
+      return(a1 + a2)
+    else {
+      return(fun(f, a, d, fa, fd, a1, eps, lim - 1, fun) +
+             fun(f, d, b, fd, fb, a2, eps, lim - 1, fun))
+    }
+  }
+  fa <- f(a)
+  fb <- f(b)
+  a0 <- ((fa + fb) * (b - a))/2
+  fun1(f, a, b, fa, fb, a0, eps, lim, fun1)
+}
+@
+
+\index{recursive}
+
+      
+\subsection{Scope}
+R 입문서 참조.
+
+<<subsec10_7.R, keep.source=TRUE>>=
+f <- function(x) {
+  y <- 2*x
+  print(x)
+  print(y)
+  print(z)
+}
+x <- 1:10
+z <- 3*x
+f(x)
+cube <- function(n) {
+  sq <- function() n*n
+  n * sq()
+}
+cube(2)
+open.account <- function(total) {
+  list(
+    deposit = function(amount) {
+      if(amount <= 0) 
+        stop("Deposits must be positive!\n")
+      total <<- total + amount
+      cat(amount, "deposited. Your balance is", total, "\n\n")
+    },
+    withdraw = function(amount) {
+      if(amount > total)
+        stop("You don't hae that much money!\n")
+      total <<- total - amount
+      cat(amount, "withdrawn. Your balance is", total, "\n\n")
+    },
+    balance = function() {
+      cat("Your balance is", total, "\n\n")
+    }
+  )
+}
+
+ross <- open.account(100)
+robert <- open.account(200)
+
+ross$withdraw(30)
+ross$balance()
+robert$balance()
+ross$deposit(50)
+ross$balance()
+@
+<<subsec10_7.R, keep.source=TRUE, eval=FALSE>>=
+ross$withdraw(500)
+@
+
+\subsection{Customizing the environment}
+R 입문서 참조.
+
+<<subsec10_8.R, keep.source=TRUE, eval=FALSE>>=
+.First <- function() {
+  options(prompt="$ ", continue="+\t")
+  options(digits=5, length=999)
+  x11()
+  par(pch = "+")
+  source(file.path(Sys.getenv("HOME"), "R", "mystuff.R"))
+  library(MASS)
+}
+
+.Last <- function() {
+  graphics.off()
+  cat(paste(date(), "\nAdios\n"))
+}
+@
+
+\index{options()}
+\index{par()}
+\index{source()}
+\index{library()}
+
+\subsection{Classes, generic functions and object orientation}
+R 입문서 참조.
+
+<<subsec10_9.R, keep.source=TRUE>>=
+methods(class="data.frame")
+methods(plot)
+coef
+methods(coef)
+getAnywhere("coef.aov")
+@
+
+\index{methods()}
+\index{getAnywhere()}
+
+\section{Statistical models in R}
+R 입문서 참조.
+
+\subsection{Defining statistical models; formulae}
+R 입문서 참조.
+
+\subsubsection{Contrasts}
+R 입문서 참조.
+
+\subsection{Linear models}
+R 입문서 참조.
+
+\index{lm()}
+
+\subsection{Generic functions for extracting model information}
+R 입문서 참조.
+
+\subsection{Analysis of variance and model comparison}
+R 입문서 참조.
+
+\subsubsection{ANOVA tables}
+R 입문서 참조.
+
+\subsection{Updating fitted models}
+R 입문서 참조.
+
+\subsection{Generalized linear models}
+R 입문서 참조.
+
+\subsubsection{Families}
+R 입문서 참조.
+
+\subsubsection{The \texttt{glm()} function}
+R 입문서 참조.
+
+\subsection{Nonlinear least squares and maximum likelihood models}
+R 입문서 참조.
+
+\subsubsection{Least squares}
+R 입문서 참조.
+
+\subsubsection{Maximum likelihood}
+R 입문서 참조.
+
+\subsection{Some non-standard models}
+R 입문서 참조.
+
+\section{Graphical procedures}
+R 입문서 참조.
+
+\subsection{High-level plotting commands}
+R 입문서 참조.
+
+\subsubsection{The \texttt{plot()} function}
+R 입문서 참조.
+
+\subsubsection{Displaying multivariate data}
+R 입문서 참조.
+
+\subsubsection{Display graphics}
+R 입문서 참조.
+
+\subsubsection{Arguments to high-level plotting functions}
+R 입문서 참조.
+
+\subsection{Low-level plotting commands}
+R 입문서 참조.
+
+\subsubsection{Mathematical annotation}
+R 입문서 참조.
+
+\subsubsection{Hershey vector fonts}
+R 입문서 참조.
+
+\subsection{Interacting with graphics}
+R 입문서 참조.
+
+\subsection{Using graphics parameters}
+R 입문서 참조.
+
+\subsubsection{Permanent changes: The \texttt{par()} function}
+R 입문서 참조.
+
+\subsubsection{Temporary changes: Arguments to graphics functions}
+R 입문서 참조.
+
+\subsection{Graphics parameters list}
+R 입문서 참조.
+
+\subsubsection{Graphical elements}
+R 입문서 참조.
+
+\subsubsection{Axes and tick marks}
+R 입문서 참조.
+
+\subsubsection{Figure margins}
+R 입문서 참조.
+
+\subsubsection{Multiple figure environment}
+R 입문서 참조.
+
+\subsection{Device drivers}
+R 입문서 참조.
+
+\subsubsection{PostScript diagrams for typeset documents}
+R 입문서 참조.
+
+\subsubsection{Multiple graphics devices}
+R 입문서 참조.
+
+\subsection{Dynamic graphics}
+R 입문서 참조.
+
+
+\section{Packages}
+R 입문서 참조.
+
+<<sec13.R, keep.source=TRUE>>=
+library()
+library(boot)
+search()
+loadedNamespaces()
+@
+<<sec13.R, keep.source=TRUE, eval=FALSE>>=
+help.start()
+@
+
+\subsection{Standard packages}
+R 입문서 참조.
+
+\subsection{Contributed packages and CRAN}
+R 입문서 참조.
+
+\subsection{Namespaces}
+R 입문서 참조.
+
+\newpage
+\appendix
+\appendixpage
+\addappheadtotoc
+
+\section{A sample session}
+R 입문서 참조.
+
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+help.start()
+@
+<<app_a.R, keep.source=TRUE>>=
+x <- rnorm(50); x
+y <- rnorm(x); y
+@
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(x, y)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(x, y)
+@
+\end{center}
+\caption{plot(x, y)}
+\label{fig:plota-1}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+ls()
+rm(x, y)
+x <- 1:20; x
+w <- 1 + sqrt(x)/2
+dummy <- data.frame(x=x, y=x + rnorm(x)*w); dummy
+fm <- lm(y ~ x, data=dummy)
+summary(fm)
+fm1 <- lm(y~x, data=dummy, weight=1/w^2)
+summary(fm1)
+rm(x, y)
+attach(dummy)
+lrf <-lowess(x, y)
+@
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(x, y)
+lines(x, lrf$y)
+abline(0, 1, lty=3)
+abline(coef(fm))
+abline(coef(fm1), col = "red")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(x, y)
+lines(x, lrf$y)
+abline(0, 1, lty=3)
+abline(coef(fm))
+abline(coef(fm1), col = "red")
+@
+\end{center}
+\caption{plot(x, y) to abline(coef(fm))}
+\label{fig:plota-2}
+\end{figure}
+<<app_a.R, keep.source=TRUE>>=
+detach(dummy)
+@
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(fitted(fm), resid(fm), xlab="Fitted values", ylab="Residuals",
+     main="Residual vs Fitted")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(fitted(fm), resid(fm), xlab="Fitted values", ylab="Residuals",
+     main="Residual vs Fitted")
+@
+\end{center}
+\caption{plot(fitted, \ldots)}
+\label{fig:plota-3}
+\end{figure}
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+qqnorm(resid(fm), main="Residuals Rankit Plot")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+qqnorm(resid(fm), main="Residuals Rankit Plot")
+@
+\end{center}
+\caption{qqnorm}
+\label{fig:plota-4}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+rm(fm, fm1, lrf, x, dummy)
+rm(list=ls())
+ls()
+filepath <- system.file("data", "morley.tab", package="datasets")
+filepath
+file.show(filepath)
+mm <- read.table(filepath); mm
+mm$Expt <- factor(mm$Expt)
+mm$Run <- factor(mm$Run)
+attach(mm)
+@
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(Expt, Speed, main="Speed of Light Data", xlab="Experiment No.")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(Expt, Speed, main="Speed of Light Data", xlab="Experiment No.")
+@
+\end{center}
+\caption{Speed of Light Data}
+\label{fig:plota-5}
+\end{figure}
+
+
+<<app_a.R, keep.source=TRUE>>=
+fm <- aov(Speed ~ Run + Expt, data=mm)
+summary(fm)
+fm0 <- update(fm, . ~ . - Run); fm0
+anova(fm0, fm)
+detach(mm)
+rm(fm, fm0)
+x <- seq(-pi, pi, len=50)
+y <- x
+f <- outer(x, y, function(x, y) cos(y)/(1 + x^2))
+oldpar <- par(no.readonly = TRUE); oldpar
+par(pty="s")
+@
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+contour(x, y, f)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+contour(x, y, f)
+@
+\end{center}
+\caption{contour(x, y, f)}
+\label{fig:plota-6}
+\end{figure}
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+contour(x, y, f, nlevels=15, add=TRUE)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+#contour(x, y, f, nlevels=15, add=TRUE)
+contour(x, y, f, nlevels=15)
+@
+\end{center}
+\caption{contour(x, y, f, nlevels=15, add=TRUE)}
+\label{fig:plota-7}
+\end{figure}
+
+
+<<app_a.R, keep.source=TRUE>>=
+fa <- (f-t(f))/2
+par(oldpar)
+@
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+image(x, y, f)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+image(x, y, f)
+@
+\end{center}
+\caption{image(x, y, f)}
+\label{fig:plota-8}
+\end{figure}
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+image(x, y, fa)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+image(x, y, fa)
+@
+\end{center}
+\caption{image(x, y, fa)}
+\label{fig:plota-9}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+objects(); rm(list=ls()); ls()
+th <-seq(-pi, pi, len=100)
+z <- exp(1i*th)
+oldpar <- par(no.readonly=TRUE)
+par(pty="s")
+@
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(z, type="l")
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(z, type="l")
+@
+\end{center}
+\caption{plot(z, type="l")}
+\label{fig:plota-10}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+par(oldpar)
+w <- rnorm(100) + rnorm(100)*1i; w
+w <- ifelse(Mod(w) > 1, 1/w, w); w
+@
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(w, xlim=c(-1, 1), ylim=c(-1, 1), pch="+", xlab="x", ylab="y")
+lines(z)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(w, xlim=c(-1, 1), ylim=c(-1, 1), pch="+", xlab="x", ylab="y")
+lines(z)
+@
+\end{center}
+\caption{plot and lines}
+\label{fig:plota-11}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+w <- sqrt(runif(100))*exp(2*pi*runif(100)*1i); w
+@
+
+\newpage
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+plot(w, xlim=c(-1, 1), ylim=c(-1, 1), pch="+", xlab="x", ylab="y")
+lines(z)
+@
+\begin{figure}[h!]
+\begin{center}
+<<fig=TRUE,echo=FALSE>>=
+plot(w, xlim=c(-1, 1), ylim=c(-1, 1), pch="+", xlab="x", ylab="y")
+lines(z)
+@
+\end{center}
+\caption{plot and lines with runif()}
+\label{fig:plota-12}
+\end{figure}
+
+<<app_a.R, keep.source=TRUE>>=
+rm(th, w, z)
+@
+
+<<app_a.R, keep.source=TRUE, eval=FALSE>>=
+q()
+@
+
+
+\section{Invoking R}
+\subsection{Invoking R from the command line}
+R 입문서 참조.
+
+\subsection{Invoking R under Windows}
+R 입문서 참조.
+
+\subsection{Invoking R under Mac OS X}
+R 입문서 참조.
+
+\subsection{Scripting with R}
+R 입문서 참조.
+
+\section{The command-line editor}
+\subsection{Preliminaries}
+R 입문서 참조.
+
+\subsection{Editing actions}
+R 입문서 참조.
+
+\subsection{Command-line editor summary}
+R 입문서 참조.
+
+
+
+
+
+\newpage
+\newpage
+\begin{thebibliography}{1}
+
+\bibitem{R-intro}
+  W. N. Venables, D. M. Smith and the R Development Core Team, 
+  \emph{An Introduction to R Version 2.11.1},
+  2010-05-31.
+\bibitem{R-intro-ko}
+  Chel Hee Lee, 
+  \emph{An Introduction to R-Korean},  
+  2011
+\bibitem{Leisch02}
+  F. Leisch,
+  \emph{Sweave: Dynamic generation of statistical reports using literate data analysis.}, 2002
+\bibitem{Leisch11}
+  F. Leisch and the R Development Core Team,
+  \emph{Sweave User Manual},
+  2011  
+\bibitem{R-import}
+  R Development Core Team,
+  \emph{R Data Import/Export},
+  2011
+    
+\end{thebibliography}
+
+
+\newpage
+\printindex
+\end{document}
