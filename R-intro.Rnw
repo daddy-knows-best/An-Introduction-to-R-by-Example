@@ -60,8 +60,8 @@
 
 \title{An Introduction to R \\ by Example version 0.1 \\ (공개 준비용)}
 %%\title{예제로 배우는 R} %% 入門書}
-\author{Sajang Yang \\
-  e-mail: Sajang.Yang (at) gmail (dot) com}
+\author{Seung Yeop Yang \\
+  e-mail: SeungYeop.Yang (at) gmail (dot) com}
 \date{August 19, 2011} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
@@ -76,7 +76,7 @@
 
 \newpage
 \begin{versionhistory}
-  \vhEntry{0.1}{\today}{Sajang\ Yang}{Created. I am planning to revise this document a couple of more times and release to the public as GPL/GFDL licensed document}
+  \vhEntry{0.1}{\today}{SeungYeop\ Yang}{Created. I am planning to revise this document a couple of more times and release to the public as GPL/GFDL licensed document}
 \end{versionhistory}
 
 \newpage
@@ -86,7 +86,7 @@
 %%B5 종이 크기에 출력하기 편하게 R 출력 칼럼 수를 60으로 고정하였으므로, 큰 종이로 포맷하실 때에는 칼럼 수를 늘리는\footnote{제 생각에 `늘리다'가 위 문장의 뜻과 맞는 것 같습니다.} 것이 읽기에 편할 것입니다. 이 문서는 GNU Pulic License (GPL)/ GNU Free Document License (GFDL) 문서입니다. \footnote{자유 소프트웨어/자유 문서이니 맘대로 읽고, 바꾸고, 나눠드리란 것이죠. 문서를 되도록이면 얇게 만들기 위해서 라이선스 부록 첨부를 생략할까 생각 중입니다. 원래 의도는 이 문서를 짧고 조그맣게 만들려고 했는 데, 막상 대충 문서가 완성되어 가는 모습을 보니, 크기는 작아도 페이지 수는 오히려 원 문서보다 더 많아질 수도 있겠다는 생각이 듭니다. 예제를 보여주기 위한 문서라 실제 출력을 그대로 보여주는 데 충실하려 했고, 또 제 나름대로 읽기 편하게 보이려고 중복 출력하는 데 주저하지 않은 데 원인이 있습니다. 휴가 일정에 맞춰 황급히 마무리하느라 아쉬움이 남지만 앞으로 두세 번 더 제가 손을 본 후 정식 공개 배포할 예정입니다.}
 \begin{quotation}
 \noindent
-Copyright \copyright\  2011  Sajang Yang.
+Copyright \copyright\  2011  SeungYeop Yang.
 
 \noindent
     Permission is granted to copy, distribute and/or modify this document
@@ -98,7 +98,7 @@ Copyright \copyright\  2011  Sajang Yang.
 
 
 \noindent
-Copyright \copyright\ 2011  Sajang Yang
+Copyright \copyright\ 2011  SeungYeop Yang
 
 \noindent
     This program is free software: you can redistribute it and/or modify
