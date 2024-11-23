@@ -1,4 +1,6 @@
 # An-Introduction-to-R-by-Example
+[LinkedIn](https://www.linkedin.com/posts/seung-yeop-yang_an-introduction-to-r-by-example-activity-7263360725224435712-ALJF?utm_source=share&utm_medium=member_desktop)
+
 An Introduction to R by Example as Rnw
 
 Another writing from me: "An Introduction to R by Example" that I have written in 2011 Summer. 
